@@ -31,3 +31,4 @@ coverage
 
 .env
 .vscode
+/src/stores/apiUrl.js
