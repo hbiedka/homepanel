@@ -28,7 +28,6 @@ export const useStore = defineStore('api', {
   },
   actions: {
     init() {
-      console.log(this.url)
       //try to get user from URL or cookie
       let user = new URLSearchParams(window.location.search).get('user')
       if (!user) {
@@ -36,13 +35,18 @@ export const useStore = defineStore('api', {
         if (userCookie) user = userCookie.split('=')[1]
         if (user) console.log("found userID in cookies: "+user)
       }
-      console.log(user)
       this.user = user
 
       //try to get token from cookie
       this.token = getCookie('token')
+
+      //TODO check if the token is valid
     },
     async login(passwd) {
+      if (this.token) {
+        this.apiError = "you are logged in yet"
+        return
+      }
       try {
         const response = await fetch(this.url+'/login', {
           method: 'POST',
@@ -58,7 +62,7 @@ export const useStore = defineStore('api', {
           if (data.token) {
             // Set token as a cookie
             document.cookie = `token=${data.token}; path=/`;
-            document.cookie = `userId=${user}; path=/; age=604800`
+            document.cookie = `userId=${this.user}; path=/; age=604800`
 
             this.token = data.token
             this.apiError = null
@@ -100,7 +104,7 @@ export const useStore = defineStore('api', {
         // Sending a GET request using the fetch API
         try
         {
-          response = await fetch(apiUrl, {
+          const response = await fetch(apiUrl, {
               method: 'GET',
               headers: {
                   'Authorization': `Bearer ${token}`,
@@ -108,11 +112,19 @@ export const useStore = defineStore('api', {
               }
           })
 
-          if ( response.status >= 200 && response.status < 500 ) {
+          if ( response.status >= 200 && response.status < 400 ) {
               if (response.ok) output.data = await response.json()
               output.status = response.status
               output.ok = true
               this.apiError = null
+          } else if (response.status >= 401 && response.status < 500 ) {
+
+            if (response.status == 401 || response.status == 403 ) {
+              this.token = undefined
+              this.apiError = "You are logged out"
+            } else {
+              this.apiError = "HTTP error "+response.status + " " + response.statusText
+            }
           } else {
             this.apiError = "Connection error: " + respoonse.statusText 
           }
@@ -121,10 +133,19 @@ export const useStore = defineStore('api', {
             this.apiError = 'There was a problem with the fetch operation:' + error;
         }
 
+        if (this.apiError) console.error(this.apiError)
+
         return output
     },
+    async update() {
+      const r = await this.sendApiRequest('api/get')
+      if (r.ok && r.status == 200) {
+        this.data = r.data
+        console.log(this.data)
+      }
+    },
     async logout() {
-      r = this.sendApiRequest('logout')
+      const r = await this.sendApiRequest('logout')
       if (r.ok && r.status == 200) {
         this.token = undefined
       } 
