@@ -20,6 +20,8 @@ export const useStore = defineStore('api', {
       user: undefined,
       token: undefined,
       data: undefined,
+      dataHandler: null,
+      dataHandleInt: 3000,
       apiError: null,
     }
   },
@@ -41,6 +43,10 @@ export const useStore = defineStore('api', {
       this.token = getCookie('token')
 
       //TODO check if the token is valid
+
+      if (!this.dataHandler) {
+        this.autoHandleData()
+      }
     },
     async login(passwd) {
       if (this.token) {
@@ -66,6 +72,8 @@ export const useStore = defineStore('api', {
 
             this.token = data.token
             this.apiError = null
+
+            this.autoHandleData()
 
           } else {
             this.apiError = 'Invalid response: No token received';
@@ -112,10 +120,12 @@ export const useStore = defineStore('api', {
               }
           })
 
+          output.ok = response.status >= 200 && response.status < 500
+          output.status = response.status
+          
           if ( response.status >= 200 && response.status < 400 ) {
               if (response.ok) output.data = await response.json()
-              output.status = response.status
-              output.ok = true
+              
               this.apiError = null
           } else if (response.status >= 401 && response.status < 500 ) {
 
@@ -143,6 +153,29 @@ export const useStore = defineStore('api', {
         this.data = r.data
         console.log(this.data)
       }
+      return r
+    },
+    async autoHandleData() {
+      if (!this.authorized ) {
+        this.dataHandler = null
+        return
+      }
+      const r = await this.update()
+
+      if (r.ok && r.status == 200) {
+        this.dataHandleInt = 3000;
+      } else if (r.ok && ( r.status == 401 || r.status == 403)) {
+        //unauthorized
+        console.log("/api/get returned Unauthorized")
+        this.token = undefined
+        this.dataHandler = null
+        return
+      } else {
+        console.log("/api/get returned "+r.status)
+        this.dataHandleInt = 10000
+      }
+
+      this.dataHandler = setTimeout(this.autoHandleData, this.dataHandleInt)
     },
     async logout() {
       const r = await this.sendApiRequest('logout')
