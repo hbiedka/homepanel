@@ -39,14 +39,8 @@
           </v-card>
         </v-col>
         <v-col cols="12" md="6" lg="4">
-          <v-card>
-            <v-card-title class="d-flex align-center">
-              <v-icon class="mr-3" size="small">mdi-thermometer</v-icon>
-              <p style="font-size:smaller">Temp. downstairs</p>
-              <v-spacer></v-spacer>
-              22.3 °C
-            </v-card-title>
-          </v-card>
+          <TemperatureWidget name="temperature/sensor_2" class="mb-2">Temp. downstairs</TemperatureWidget>
+          <TemperatureWidget name="temperature/sensor_1" class="mb-2">Temp. upstairs</TemperatureWidget>
         </v-col>
       </v-row>
       <v-card v-else width="700" class="pt-4">
@@ -74,8 +68,12 @@
 <script>
 
 import { useStore } from "@/stores/api"
+import { TemperatureWidget } from "@/components"
 
 export default {
+  components: {
+    TemperatureWidget
+  },
   setup() {
     const store = useStore()
     store.init()
