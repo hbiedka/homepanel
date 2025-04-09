@@ -147,6 +147,9 @@ export const useStore = defineStore('api', {
 
         return output
     },
+    async sendCommand(cmd) {
+      return this.sendApiRequest('api/command/'+cmd)
+    },
     async update() {
       const r = await this.sendApiRequest('api/get')
       if (r.ok && r.status == 200) {

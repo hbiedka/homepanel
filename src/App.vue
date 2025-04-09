@@ -27,16 +27,14 @@
           </v-card>
         </v-col>
         <v-col cols="12" md="6" lg="4">
-          <v-card>
-            <v-card-title class="d-flex align-center">
-              <v-icon class="mr-3" size="small">mdi-server</v-icon>
-              <p style="font-size:smaller;">
-                Server room
-              </p>
-              <v-spacer></v-spacer>
-              <v-switch inset hide-details></v-switch>
-            </v-card-title>
-          </v-card>
+          <OnOffWidget 
+            stateEndpoint="server" 
+            commandOn="server-on" 
+            commandOff="server-off"
+            icon="mdi-server"
+          >
+            Server
+          </OnOffWidget>
         </v-col>
         <v-col cols="12" md="6" lg="4">
           <TemperatureWidget name="temperature/sensor_2" class="mb-2">Temp. downstairs</TemperatureWidget>
@@ -68,11 +66,12 @@
 <script>
 
 import { useStore } from "@/stores/api"
-import { TemperatureWidget } from "@/components"
+import { TemperatureWidget, OnOffWidget } from "@/components"
 
 export default {
   components: {
-    TemperatureWidget
+    TemperatureWidget,
+    OnOffWidget
   },
   setup() {
     const store = useStore()

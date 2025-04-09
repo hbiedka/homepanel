@@ -1,3 +1,4 @@
 import TemperatureWidget from './TemperatureWidget.vue'
+import OnOffWidget from './OnOffWidget.vue'
 
-export { TemperatureWidget }
+export { TemperatureWidget, OnOffWidget }
