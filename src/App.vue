@@ -11,20 +11,11 @@
     <v-container class="fill-height d-flex justify-center align-center" max-width="1200">
       <v-row v-if="loggedIn">
         <v-col cols="12" md="6" lg="4">
-          <v-card>
-            <v-card-title class="d-flex align-center">
-              <v-icon class="mr-3" size="small">mdi-lightbulb</v-icon>          
-              <p style="font-size:smaller;">
-                Exterior lights
-              </p>
-              <v-spacer></v-spacer>
-              <p style="background-color: #1B5E20; border-radius: 5px; font-size:smaller;" class="px-2 py-0">ON</p>
-            </v-card-title>
-            <v-card-text class="mt-2">
-              <v-btn elevated color="primary" class="ma-2">Turn on for 10 min</v-btn>
-              <v-btn elevated class="ma-2">Turn off</v-btn>
-            </v-card-text>
-          </v-card>
+          <MultiButtonWidget
+            stateEndpoint="extLight" 
+            icon="mdi-lightbulb"
+            :buttons="exteriorLightButtons"
+          >Exterior light</MultiButtonWidget>
         </v-col>
         <v-col cols="12" md="6" lg="4">
           <OnOffWidget 
@@ -66,12 +57,13 @@
 <script>
 
 import { useStore } from "@/stores/api"
-import { TemperatureWidget, OnOffWidget } from "@/components"
+import { TemperatureWidget, OnOffWidget, MultiButtonWidget } from "@/components"
 
 export default {
   components: {
     TemperatureWidget,
-    OnOffWidget
+    OnOffWidget,
+    MultiButtonWidget
   },
   setup() {
     const store = useStore()
@@ -80,7 +72,11 @@ export default {
   },
   data() {
     return {
-      password: ""
+      password: "",
+      exteriorLightButtons: `[
+          { "label": "Turn on for 10 min", "command": "ext-light-on", "primary": true },
+          { "label": "Turn off", "command": "ext-light-off" }
+      ]`
     }
   },
   computed: {
