@@ -59,9 +59,7 @@ export default {
             
             const to = this.swtichState
             
-            console.log(`state switched ${to}`)
-            //drop indeterminate state
-            
+            //drop indeterminate state            
             if (to !== true && to !== false ) {
                 console.error(`indetermined state of switch: ${to}`)
                 return

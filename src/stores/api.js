@@ -64,7 +64,6 @@ export const useStore = defineStore('api', {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
           if (data.token) {
             // Set token as a cookie
             document.cookie = `token=${data.token}; path=/`;
@@ -81,7 +80,6 @@ export const useStore = defineStore('api', {
         } else {
           if (response.status == 401) {
               const data = await response.json()
-              console.log(data)
               let attempts = data.attemptsLeft
 
               if (attempts == 0) {
@@ -154,7 +152,6 @@ export const useStore = defineStore('api', {
       const r = await this.sendApiRequest('api/get')
       if (r.ok && r.status == 200) {
         this.data = r.data
-        console.log(this.data)
       }
       return r
     },
