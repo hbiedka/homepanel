@@ -1,6 +1,4 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { api_url } from './apiUrl';
 
 function getCookie(name) {
   const cookies = document.cookie.split(';'); // Split into individual cookies
@@ -16,7 +14,7 @@ function getCookie(name) {
 export const useStore = defineStore('api', {
   state: () => {
     return {
-      url: api_url,
+      url: undefined,
       user: undefined,
       token: undefined,
       data: undefined,
@@ -30,6 +28,13 @@ export const useStore = defineStore('api', {
   },
   actions: {
     init() {
+      //get url from env
+      this.url = import.meta.env.VITE_API_URL
+      if (!this.url) {
+        console.error("API URL not set")
+        return
+      }
+
       //try to get user from URL or cookie
       let user = new URLSearchParams(window.location.search).get('user')
       if (!user) {
