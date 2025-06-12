@@ -43,6 +43,8 @@
               type="password" 
               outlined 
               dense
+              inputmode="numeric"
+               :rules="[value => /^\d*$/.test(value) || 'Only digits are allowed']"
               class="mb-3"
           ></v-text-field>
           <v-btn color="primary" block class="mb-2" type="submit">Login</v-btn>
