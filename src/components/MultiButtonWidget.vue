@@ -9,7 +9,7 @@
                   <p v-if="state" style="background-color: #1B5E20; border-radius: 5px; font-size:smaller;" class="px-2 py-0">ON</p>
                   <p v-else style="background-color: #424242; border-radius: 5px; font-size:smaller;" class="px-2 py-0">OFF</p>
             </v-card-title>
-            <v-card-text class="mt-2">
+            <v-card-text class="mt-2" v-if="buttonObjects.length > 0">
               <v-btn v-for="(button, index) in buttonObjects" :key="index" :color="button.primary ? 'primary' : 'grey'" @click="store.sendCommand(button.command)" class="ma-2">
                 {{ button.label }}
               </v-btn>

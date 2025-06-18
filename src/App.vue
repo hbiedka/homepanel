@@ -26,10 +26,17 @@
           >
             Server
           </OnOffWidget>
+          <MultiButtonWidget
+            stateEndpoint="inputs/alarm" 
+            icon="mdi-shield-home"
+            class="mt-2"
+          >
+            Alarm
+          </MultiButtonWidget>
         </v-col>
         <v-col cols="12" md="6" lg="4">
-          <TemperatureWidget name="temperature/sensor_2" class="mb-2">Temp. downstairs</TemperatureWidget>
-          <TemperatureWidget name="temperature/sensor_1" class="mb-2">Temp. upstairs</TemperatureWidget>
+          <TemperatureWidget name="temperature/downstairs" class="mb-2">Temp. downstairs</TemperatureWidget>
+          <TemperatureWidget name="temperature/upstairs" class="mb-2">Temp. upstairs</TemperatureWidget>
         </v-col>
       </v-row>
       <v-card v-else width="700" class="pt-4">
