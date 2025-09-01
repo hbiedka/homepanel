@@ -18,14 +18,19 @@
                 <b>{{ batterySoc }} %</b>
             </p>
             <p class="d-flex mb-1">
+                Load
+                <v-spacer></v-spacer>
+                <b>{{ load }} %</b>
+            </p>
+            <p class="d-flex mb-1">
                 Battery voltage
                 <v-spacer></v-spacer>
                 <b>{{ batteryVoltage }} V</b>
             </p>
             <p class="d-flex mb-1">
-                Input voltage
+                Input voltage / freq.
                 <v-spacer></v-spacer>
-                <b>{{ inVoltage }} V</b>
+                <b>{{ inVoltage }} V / {{ inFreq }} Hz</b>
             </p>
             <p class="d-flex mb-1">
                 Output voltage
@@ -78,11 +83,17 @@ export default {
         batteryVoltage() {
             return this.ups?.battery?.voltage?.value || "?"
         },
+        load() {
+            return this.ups?.ups?.load?.value || "?"
+        },
         inVoltage() {
             return this.ups?.input?.voltage?.value || "?"
         },
         outVoltage() {
             return this.ups?.output?.voltage?.value || "?"
+        },
+        inFreq() {
+            return this.ups?.input?.frequency?.value || "?"
         },
 
     }
