@@ -18,6 +18,9 @@
           >Exterior light</MultiButtonWidget>
         </v-col>
         <v-col cols="12" md="6" lg="4">
+          <UpsWidget name="ups" class="mb-2">UPS</UpsWidget>
+        </v-col>
+        <v-col cols="12" md="6" lg="4">
           <OnOffWidget 
             stateEndpoint="server" 
             commandOn="server-on" 
@@ -33,10 +36,8 @@
           >
             Alarm
           </MultiButtonWidget>
-        </v-col>
-        <v-col cols="12" md="6" lg="4">
-          <TemperatureWidget name="temperature/downstairs" class="mb-2">Temp. downstairs</TemperatureWidget>
-          <TemperatureWidget name="temperature/upstairs" class="mb-2">Temp. upstairs</TemperatureWidget>
+          <TemperatureWidget name="temperature/downstairs" class="mt-2">Temp. downstairs</TemperatureWidget>
+          <TemperatureWidget name="temperature/upstairs" class="mt-2">Temp. upstairs</TemperatureWidget>
         </v-col>
       </v-row>
       <v-card v-else width="700" class="pt-4">
@@ -66,13 +67,14 @@
 <script>
 
 import { useStore } from "@/stores/api"
-import { TemperatureWidget, OnOffWidget, MultiButtonWidget } from "@/components"
+import { TemperatureWidget, OnOffWidget, MultiButtonWidget, UpsWidget } from "@/components"
 
 export default {
   components: {
     TemperatureWidget,
     OnOffWidget,
-    MultiButtonWidget
+    MultiButtonWidget,
+    UpsWidget
   },
   setup() {
     const store = useStore()
